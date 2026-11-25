@@ -4,7 +4,7 @@
   "enableJs": true,
   "enabled": true,
   "enabledCookieJar": false,
-  "lastUpdateTime": 1795528918282,
+  "lastUpdateTime": 1795617180099,
   "loadWithBaseUrl": false,
   "ruleArticles": "<js>\nvar list = JSON.parse(String(result));\nvar rawUrl = String(baseUrl).replace(/#.*$/, '');\nvar names = [];\nfor (var k = 0; k < list.length; k++) {\n  names.push(String(list[k].bookSourceName || ''));\n}\nvar out = [{\n  title: '一键导入全部书源（共 ' + list.length + ' 个）',\n  pubDate: '合集 · 点开后点击一键导入',\n  link: rawUrl + '#all',\n  desc: '包含：' + names.join('、')\n}];\nfor (var i = 0; i < list.length; i++) {\n  var b = list[i];\n  out.push({\n    title: String(b.bookSourceName || ''),\n    pubDate: (b.bookSourceGroup ? String(b.bookSourceGroup) + ' · ' : '') + String(b.bookSourceUrl || ''),\n    link: rawUrl + '#' + i,\n    desc: String(b.bookSourceComment || b.bookSourceUrl || '')\n  });\n}\nJSON.stringify(out);\n</js>$.[*]",
   "ruleContent": "<js>\nvar list = JSON.parse(String(result));\nvar fullUrl = String(baseUrl);\nvar rawUrl = fullUrl.replace(/#.*$/, '');\nvar hash = fullUrl.indexOf('#') !== -1 ? fullUrl.split('#')[1] : 'all';\nvar importAll = 'legado://import/bookSource?src=' + encodeURIComponent(rawUrl);\nvar btnPrimary = 'display:inline-block;padding:10px 16px;margin:8px 8px 8px 0;background:#2563eb;color:#fff;text-decoration:none;border-radius:8px;font-weight:bold;';\nvar btnSecondary = 'display:inline-block;padding:10px 16px;margin:8px 8px 8px 0;background:#475569;color:#fff;text-decoration:none;border-radius:8px;font-weight:bold;';\nvar html = '<div style=\"font-family:sans-serif;line-height:1.7;padding:8px;\">';\nvar idx = parseInt(hash, 10);\nif (hash === 'all' || isNaN(idx) || !list[idx]) {\n  html += '<h2>我的书源仓库（共 ' + list.length + ' 个）</h2>';\n  html += '<p><a style=\"' + btnPrimary + '\" href=\"' + importAll + '\">一键导入全部书源</a></p>';\n  html += '<p style=\"color:#666;font-size:13px;\">点击后在 Legado 弹窗中可自由勾选全部或单个书源。</p><ul>';\n  for (var i = 0; i < list.length; i++) {\n    html += '<li><b>' + String(list[i].bookSourceName || '') + '</b>（' + String(list[i].bookSourceGroup || '未分组') + '）— ' + String(list[i].bookSourceUrl || '') + '</li>';\n  }\n  html += '</ul>';\n} else {\n  var b = list[idx];\n  var name = String(b.bookSourceName || '');\n  var singleUrl = rawUrl.replace(/\\/bookSources\\.json$/, '/src/' + encodeURIComponent(name + '.json'));\n  var importSingle = 'legado://import/bookSource?src=' + encodeURIComponent(singleUrl);\n  html += '<h2>' + name + '</h2>';\n  html += '<p><b>分组：</b>' + String(b.bookSourceGroup || '未分组') + '<br><b>地址：</b>' + String(b.bookSourceUrl || '') + '</p>';\n  if (b.bookSourceComment) {\n    html += '<p><b>说明：</b>' + String(b.bookSourceComment) + '</p>';\n  }\n  html += '<p><a style=\"' + btnPrimary + '\" href=\"' + importSingle + '\">一键导入此书源</a>';\n  html += '<a style=\"' + btnSecondary + '\" href=\"' + importAll + '\">导入全部书源</a></p>';\n}\nhtml += '<p style=\"color:#888;font-size:12px;word-break:break-all;\">合集直链：' + rawUrl + '</p></div>';\nhtml;\n</js>",
@@ -17,6 +17,6 @@
   "sourceComment": "个人书源仓库（单文件直链版，无需 Pages）。点开任意条目即可一键导入单源或全部书源。",
   "sourceGroup": "自建",
   "sourceIcon": "",
-  "sourceName": "砂糖桔书源",
+  "sourceName": "我的书源仓库",
   "sourceUrl": "https://fastly.jsdelivr.net/gh/entr0pia/legado-source@main/bookSources.json"
 }
